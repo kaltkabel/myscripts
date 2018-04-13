@@ -1,47 +1,39 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-#persistent
+#NoEnv
+#SingleInstance,Force
 
-InputBox, Abstime, Arbeitszeit heute, , , 200, 100
+InputBox, X, Arbeitszeit heute, , , 200, 100
 	if ErrorLevel
 		ExitApp
 	else
-	ifEqual, Abstime, 
+	ifEqual, X, 
 		ExitApp
 	else
-InputBox, Unttime, Arbeiten bis.., , , 200, 100
+GoSub, BreakApp
+AbsMin := X
+
+InputBox, X, Arbeiten bis.., , , 200, 100
 	if ErrorLevel
 		ExitApp
 	else
-	ifEqual, Unttime, 
+	ifEqual, X, 
 		ExitApp
 	else
+GoSub, BreakApp
+UntMin := X
 
-formattime, time, , HHmm
-NowT := time
-AbsT := Abstime
-UntT := Unttime
-MaxG := 480
+formattime, X, , HHmm
+GoSub, BreakApp
+NowMin := X
+MaxMin := 480
 
-AbsM := Mod(AbsT, 100)
-AbsH := (AbsT - AbsM) / 100
-AbsG := AbsM + AbsH * 60
-
-NowM := Mod(NowT, 100)
-NowH := (NowT - NowM) / 100
-NowG := NowM + NowH * 60
-
-UntM := Mod(UntT, 100)
-UntH := (UntT - UntM) / 100
-UntG := UntM + UntH * 60
-
-MaxAbs := MaxG - AbsG
-UntNow := UntG - NowG
-
-BreakG := UntNow - MaxAbs
-
-MsgBox, Du kannst noch %BreakG%min Pause machen
-
+MaxAbs := MaxMin - AbsMin
+UntNow := UntMin - NowMin
+BreakG := floor(UntNow - MaxAbs)
+MsgBox, Mein Herr und Meister! Sie dürfen noch %BreakG%min Pause machen, falls Sie es möchten.
 ExitApp
+
+BreakApp:
+Y := Mod(X, 100)
+Z := (X - Y) / 100
+X := Y + Z * 60
+return
