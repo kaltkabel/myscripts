@@ -1,7 +1,7 @@
 #NoEnv
 #SingleInstance,Force
 
-InputBox, X, Arbeitszeit heute, , , 200, 100
+InputBox, X, Arbeitszeit, , , 150, 100
 	if ErrorLevel
 		ExitApp
 	else
@@ -11,7 +11,7 @@ InputBox, X, Arbeitszeit heute, , , 200, 100
 GoSub, BreakApp
 AbsMin := X
 
-InputBox, X, Arbeiten bis.., , , 200, 100
+InputBox, X, Feierabend, , , 150, 100
 	if ErrorLevel
 		ExitApp
 	else
@@ -29,7 +29,7 @@ MaxMin := 480
 MaxAbs := MaxMin - AbsMin
 UntNow := UntMin - NowMin
 BreakG := floor(UntNow - MaxAbs)
-MsgBox, Mein Herr und Meister! Sie dürfen noch %BreakG%min Pause machen, falls Sie es möchten.
+MsgBox, Pausenzeit heute: %BreakG% Minuten
 ExitApp
 
 BreakApp:
